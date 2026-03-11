@@ -1,11 +1,15 @@
 import { TerminalHero } from '@/components/terminal-hero';
 import { BentoGrid } from '@/components/bento-grid';
+import { ProfileSkillsExperience } from '@/components/profile-skills-experience';
 
 export default function Home() {
   return (
     <main className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-950 to-slate-900">
       {/* Terminal Hero Section */}
       <TerminalHero />
+
+      {/* Profile, Skills & Experience Section */}
+      <ProfileSkillsExperience />
 
       {/* Bento Grid Projects Section */}
       <BentoGrid />
