@@ -73,13 +73,13 @@ export function ProfileSkillsExperience() {
           {/* Card 1: Professional Summary (2 columns) */}
           <motion.div
             variants={itemVariants}
-            className="md:col-span-2 bg-slate-900 border border-slate-800 rounded-xl p-6 hover:border-slate-700 transition-colors duration-300"
+            className="md:col-span-2 bg-gradient-to-br from-slate-950/80 to-slate-900/80 backdrop-blur-md border border-white/10 rounded-xl p-6 hover:border-emerald-500/30 transition-colors duration-300"
           >
             <div className="mb-4">
-              <h3 className="font-mono text-blue-500 text-sm mb-4">
+              <h3 className="font-mono text-emerald-400 text-sm mb-4">
                 &gt; whoami
               </h3>
-              <div className="w-12 h-0.5 bg-blue-500 rounded"></div>
+              <div className="w-12 h-0.5 bg-emerald-500 rounded"></div>
             </div>
 
             <p className="text-slate-200 leading-relaxed text-base">
@@ -90,9 +90,14 @@ export function ProfileSkillsExperience() {
               testable, and strictly typed code.
             </p>
 
-            <div className="mt-6 pt-6 border-t border-slate-800">
-              <p className="text-slate-400 text-sm font-mono">
-                Status: <span className="text-emerald-500">● Online</span>
+            <div className="mt-6 pt-6 border-t border-white/5">
+              <p className="text-slate-400 text-sm font-mono flex items-center gap-2">
+                Status: 
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                </span>
+                <span className="text-emerald-400">Online</span>
               </p>
             </div>
           </motion.div>
@@ -100,7 +105,7 @@ export function ProfileSkillsExperience() {
           {/* Card 2: Work Experience (1 column, tall) */}
           <motion.div
             variants={itemVariants}
-            className="md:row-span-2 bg-slate-900 border border-slate-800 rounded-xl p-6 hover:border-slate-700 transition-colors duration-300"
+            className="md:row-span-2 bg-gradient-to-br from-slate-950/80 to-slate-900/80 backdrop-blur-md border border-white/10 rounded-xl p-6 hover:border-emerald-500/30 transition-colors duration-300"
           >
             <h3 className="text-slate-50 font-bold text-lg mb-6">Experience</h3>
 
@@ -109,7 +114,7 @@ export function ProfileSkillsExperience() {
                 <h4 className="text-slate-200 font-semibold">
                   Software Engineer
                 </h4>
-                <p className="text-blue-500 text-sm font-mono mt-1">
+                <p className="text-blue-400 text-sm font-mono mt-1">
                   Province of Settat
                 </p>
                 <p className="text-slate-500 text-xs font-mono mt-2">
@@ -117,7 +122,7 @@ export function ProfileSkillsExperience() {
                 </p>
               </div>
 
-              <div className="pt-4 border-t border-slate-800">
+              <div className="pt-4 border-t border-white/5">
                 <ul className="space-y-3 text-slate-400 text-sm">
                   <li className="flex gap-3">
                     <span className="text-emerald-500 flex-shrink-0">→</span>
@@ -148,7 +153,7 @@ export function ProfileSkillsExperience() {
           {/* Card 3: Tech Stack & Skills (Full width) */}
           <motion.div
             variants={itemVariants}
-            className="md:col-span-3 bg-slate-900 border border-slate-800 rounded-xl p-6 hover:border-slate-700 transition-colors duration-300"
+            className="md:col-span-3 bg-gradient-to-br from-slate-950/80 to-slate-900/80 backdrop-blur-md border border-white/10 rounded-xl p-6 hover:border-emerald-500/30 transition-colors duration-300"
           >
             <h3 className="text-slate-50 font-bold text-lg mb-6">
               System Architecture & Stack
@@ -157,14 +162,14 @@ export function ProfileSkillsExperience() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
               {skillCategories.map((category) => (
                 <div key={category.label}>
-                  <h4 className="text-slate-200 font-semibold text-sm mb-4 font-mono text-blue-500">
+                  <h4 className="text-slate-200 font-semibold text-sm mb-4 font-mono text-emerald-400">
                     {category.label}
                   </h4>
                   <div className="flex flex-wrap gap-2">
                     {category.skills.map((skill) => (
                       <span
                         key={skill}
-                        className="bg-slate-950 border border-slate-700 text-slate-300 px-3 py-1 rounded-md font-mono text-xs hover:border-slate-600 transition-colors duration-200"
+                        className="bg-slate-900/50 backdrop-blur-sm border border-white/5 text-slate-300 px-3 py-1 rounded-md font-mono text-xs hover:border-emerald-500/50 transition-colors duration-200"
                       >
                         {skill}
                       </span>
