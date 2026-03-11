@@ -147,13 +147,13 @@ Ready to collaborate on next-generation solutions.`;
                 <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
                 <div className="w-3 h-3 rounded-full bg-green-500"></div>
               </div>
-              <span className="text-xs text-slate-400 ml-2 font-mono" suppressHydrationWarning>terminal - guest@{typeof navigator !== 'undefined' ? (navigator.userAgent.includes('Win') ? 'Windows' : navigator.userAgent.includes('Mac') ? 'macOS' : 'Linux') : 'unknown'}</span>
+              <span className="text-xs text-slate-400 ml-2 font-mono">terminal - guest@developer</span>
             </div>
 
             {/* Terminal Content */}
             <div className="p-6 font-mono text-sm leading-relaxed relative z-20 min-h-[320px] max-h-[500px] overflow-y-auto" onClick={() => inputRef.current?.focus()}>
-              <div className="text-slate-500 mb-4" suppressHydrationWarning>
-                Last login: {new Date().toLocaleDateString()} {new Date().toLocaleTimeString()} on ttys001
+              <div className="text-slate-500 mb-4">
+                Last login on ttys001
               </div>
 
               {/* Command */}
