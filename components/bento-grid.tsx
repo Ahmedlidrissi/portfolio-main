@@ -50,7 +50,7 @@ export function BentoGrid() {
     <section className="py-20 px-4">
       <div className="max-w-7xl mx-auto">
         {/* Section Header */}
-        <div className="mb-16">
+        <div className="mb-16" id="projects">
           <h2 className="text-4xl font-bold text-slate-50 mb-4">Featured Projects</h2>
           <p className="text-slate-400 text-lg max-w-2xl">
             Architecting systems that scale. Each project represents a commitment to
