@@ -116,7 +116,8 @@ Ready to collaborate on next-generation solutions.`;
   if (!isVisible) return <div className="min-h-screen py-20 flex flex-col items-center justify-center">
     <button 
       onClick={() => setIsVisible(true)} 
-      className="px-4 py-2 bg-slate-800 border border-slate-700 rounded-md text-emerald-400 font-mono hover:bg-slate-700 transition"
+      className="px-4 py-2 rounded-md font-mono transition"
+      style={{ background: 'var(--surface)', border: '1px solid var(--border)', color: 'var(--accent)' }}
     >
       &gt; restart_terminal
     </button>
@@ -135,39 +136,40 @@ Ready to collaborate on next-generation solutions.`;
           dragElastic={0.1}
           whileHover={{ scale: 1.01 }}
           transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-          className="w-full relative shadow-2xl shadow-blue-500/10 cursor-move"
+          className="w-full relative cursor-move"
+          style={{ boxShadow: '0 25px 50px -12px var(--shadow-color)' }}
         >
-          <div className="relative bg-gradient-to-br from-slate-950/80 to-slate-900/80 backdrop-blur-md rounded-lg border border-white/10 overflow-hidden shadow-2xl">
+          <div className="relative backdrop-blur-md rounded-lg overflow-hidden shadow-2xl" style={{ background: 'var(--card)', border: '1px solid var(--border)' }}>
             <ScanlineOverlay />
             
             {/* Terminal Header */}
-            <div className="bg-slate-900/50 px-4 py-3 flex items-center gap-2 border-b border-white/5 relative z-20">
+            <div className="px-4 py-3 flex items-center gap-2 relative z-20" style={{ background: 'var(--surface)', borderBottom: '1px solid var(--border)' }}>
               <div className="flex gap-2">
                 <button onClick={() => setIsVisible(false)} className="w-3 h-3 rounded-full bg-red-500 hover:bg-red-400 transition" />
                 <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
                 <div className="w-3 h-3 rounded-full bg-green-500"></div>
               </div>
-              <span className="text-xs text-slate-400 ml-2 font-mono" suppressHydrationWarning>terminal - guest@{typeof navigator !== 'undefined' ? (navigator.userAgent.includes('Win') ? 'Windows' : navigator.userAgent.includes('Mac') ? 'macOS' : 'Linux') : 'unknown'}</span>
+              <span className="text-xs ml-2 font-mono" style={{ color: 'var(--muted)' }} suppressHydrationWarning>terminal - guest@{typeof navigator !== 'undefined' ? (navigator.userAgent.includes('Win') ? 'Windows' : navigator.userAgent.includes('Mac') ? 'macOS' : 'Linux') : 'unknown'}</span>
             </div>
 
             {/* Terminal Content */}
             <div className="p-6 font-mono text-sm leading-relaxed relative z-20 min-h-[320px] max-h-[500px] overflow-y-auto" onClick={() => inputRef.current?.focus()}>
-              <div className="text-slate-500 mb-4" suppressHydrationWarning>
+              <div className="mb-4" style={{ color: 'var(--muted)' }} suppressHydrationWarning>
                 Last login: {new Date().toLocaleDateString()} {new Date().toLocaleTimeString()} on ttys001
               </div>
 
               {/* Command */}
               {phase !== 'output' && phase !== 'interactive' && (
-                <div className="text-emerald-400 mb-4 flex items-center">
+                <div className="mb-4 flex items-center" style={{ color: 'var(--accent)' }}>
                   <span>{displayText}</span>
-                  {showCursor && <span className="w-2 h-4 bg-emerald-400 inline-block ml-1 animate-pulse"></span>}
+                  {showCursor && <span className="w-2 h-4 inline-block ml-1 animate-pulse" style={{ background: 'var(--accent)' }}></span>}
                 </div>
               )}
 
               {/* Executing State */}
               {phase === 'executing' && (
-                <div className="text-blue-400 flex items-center gap-2 mb-4">
-                  <span className="inline-block w-2 h-2 bg-blue-400 animate-pulse"></span>
+                <div className="flex items-center gap-2 mb-4" style={{ color: 'var(--primary)' }}>
+                  <span className="inline-block w-2 h-2 animate-pulse" style={{ background: 'var(--primary)' }}></span>
                   Executing...
                 </div>
               )}
@@ -175,11 +177,11 @@ Ready to collaborate on next-generation solutions.`;
               {/* Output */}
               {(phase === 'output' || phase === 'interactive') && (
                 <div className="space-y-1">
-                  <div className="text-emerald-400">{commandText}</div>
-                  <div className="text-slate-300 mt-4 whitespace-pre-wrap">
+                  <div style={{ color: 'var(--accent)' }}>{commandText}</div>
+                  <div className="mt-4 whitespace-pre-wrap" style={{ color: 'var(--foreground)' }}>
                     {phase === 'output' ? displayText : initialOutput}
                     {phase === 'output' && displayText.length < initialOutput.length && showCursor && (
-                      <span className="w-2 h-4 bg-slate-300 inline-block ml-1"></span>
+                      <span className="w-2 h-4 inline-block ml-1" style={{ background: 'var(--foreground)' }}></span>
                     )}
                   </div>
                 </div>
@@ -189,7 +191,7 @@ Ready to collaborate on next-generation solutions.`;
               {history.length > 0 && (
                 <div className="mt-4 space-y-1">
                   {history.map((line, i) => (
-                    <div key={i} className={line.startsWith('$') ? 'text-emerald-400' : 'text-slate-300'}>
+                    <div key={i} style={{ color: line.startsWith('$') ? 'var(--accent)' : 'var(--foreground)' }}>
                       {line}
                     </div>
                   ))}
@@ -198,7 +200,7 @@ Ready to collaborate on next-generation solutions.`;
 
               {/* Interactive Input */}
               {phase === 'interactive' && (
-                <div className="mt-4 flex items-center text-emerald-400">
+                <div className="mt-4 flex items-center" style={{ color: 'var(--accent)' }}>
                   <span className="mr-2">$</span>
                   <input
                     ref={inputRef}
@@ -206,7 +208,8 @@ Ready to collaborate on next-generation solutions.`;
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
                     onKeyDown={handleCommand}
-                    className="bg-transparent border-none outline-none flex-1 text-emerald-400 font-mono caret-emerald-400 focus:ring-0"
+                    className="bg-transparent border-none outline-none flex-1 font-mono focus:ring-0"
+                    style={{ color: 'var(--accent)', caretColor: 'var(--accent)' }}
                     autoFocus
                     spellCheck={false}
                   />
@@ -218,10 +221,10 @@ Ready to collaborate on next-generation solutions.`;
 
         {/* Hero Description */}
         <div className="mt-12 text-center relative z-10 pointer-events-none">
-          <h1 className="text-4xl md:text-5xl font-bold text-slate-50 mb-4">
+          <h1 className="text-4xl md:text-5xl font-bold mb-4" style={{ color: 'var(--heading)' }}>
             Full Stack Developer
           </h1>
-          <p className="text-lg text-slate-300 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-lg max-w-2xl mx-auto leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
             Crafting elegant solutions to complex problems. Specializing in cloud-native
             architectures, microservices, and modern web technologies.
           </p>

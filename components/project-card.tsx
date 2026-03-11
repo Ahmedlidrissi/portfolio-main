@@ -17,21 +17,21 @@ function ArchitectureDiagram({ flow }: { flow: string }) {
   const parts = flow.split('→').map(s => s.trim());
   
   return (
-    <div className="mt-2 py-4 flex items-center justify-center space-x-2 text-xs font-mono text-blue-400 relative overflow-hidden">
+    <div className="mt-2 py-4 flex items-center justify-center space-x-2 text-xs font-mono relative overflow-hidden" style={{ color: 'var(--primary)' }}>
       {parts.map((part, index) => (
         <div key={index} className="flex items-center">
-          <div className="px-3 py-1.5 rounded bg-blue-500/10 border border-blue-500/30 flex items-center justify-center relative z-10">
+          <div className="px-3 py-1.5 rounded flex items-center justify-center relative z-10" style={{ background: 'color-mix(in srgb, var(--primary) 10%, transparent)', border: '1px solid color-mix(in srgb, var(--primary) 30%, transparent)' }}>
             {part}
           </div>
           {index < parts.length - 1 && (
-            <div className="w-8 h-px bg-blue-500/30 relative flex items-center -mx-1 z-0">
+            <div className="w-8 h-px relative flex items-center -mx-1 z-0" style={{ background: 'color-mix(in srgb, var(--primary) 30%, transparent)' }}>
               <motion.div 
-                className="absolute h-0.5 w-full bg-blue-400/80" 
-                style={{ originX: 0 }}
+                className="absolute h-0.5 w-full" 
+                style={{ originX: 0, background: 'color-mix(in srgb, var(--primary) 80%, transparent)' }}
                 animate={{ scaleX: [0, 1, 0], x: ['0%', '0%', '100%'] }}
                 transition={{ duration: 2, repeat: Infinity, ease: 'linear', delay: index * 0.5 }}
               />
-              <div className="absolute right-0 w-2 h-2 border-t border-r border-blue-500/50 transform rotate-45 mr-0.5"></div>
+              <div className="absolute right-0 w-2 h-2 transform rotate-45 mr-0.5" style={{ borderTop: '1px solid color-mix(in srgb, var(--primary) 50%, transparent)', borderRight: '1px solid color-mix(in srgb, var(--primary) 50%, transparent)' }}></div>
             </div>
           )}
         </div>
@@ -78,25 +78,26 @@ export function ProjectCard({
 
   return (
     <motion.div
-      whileHover={{ y: -5, boxShadow: '0 0 20px rgba(16, 185, 129, 0.15)' }}
+      whileHover={{ y: -5, boxShadow: '0 0 20px color-mix(in srgb, var(--accent) 15%, transparent)' }}
       transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-      className={`group relative bg-gradient-to-br from-slate-950/80 to-slate-900/80 backdrop-blur-md border border-white/10 rounded-lg p-6 hover:border-emerald-500/50 transition-colors overflow-hidden ${className}`}
+      className={`group relative backdrop-blur-md rounded-lg p-6 transition-colors overflow-hidden ${className}`}
+      style={{ background: 'var(--card)', border: '1px solid var(--border)' }}
     >
       {/* Glow highlight effect */}
-      <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/0 via-emerald-500/10 to-emerald-500/0 opacity-0 group-hover:opacity-100 group-hover:-translate-x-full group-hover:animate-[shimmer_2s_infinite] transition-all duration-700 ease-out z-0 pointer-events-none" />
+      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 group-hover:-translate-x-full group-hover:animate-[shimmer_2s_infinite] transition-all duration-700 ease-out z-0 pointer-events-none" style={{ background: 'linear-gradient(to right, transparent, color-mix(in srgb, var(--accent) 10%, transparent), transparent)' }} />
 
       <div className="relative z-10">
         {/* Header */}
         <div className="flex items-start justify-between mb-4">
           <div>
-            <h3 className="text-xl font-semibold text-slate-50 group-hover:text-emerald-400 transition-colors">{title}</h3>
-            <p className="text-slate-400 text-sm mt-1">{description}</p>
+            <h3 className="text-xl font-semibold transition-colors" style={{ color: 'var(--heading)' }}>{title}</h3>
+            <p className="text-sm mt-1" style={{ color: 'var(--text-secondary)' }}>{description}</p>
           </div>
         </div>
 
         {/* Health Status */}
         {healthEndpoint && (
-          <div className="mb-4 p-3 bg-slate-900/50 backdrop-blur-sm rounded border border-white/5">
+          <div className="mb-4 p-3 backdrop-blur-sm rounded" style={{ background: 'var(--badge-bg)', border: '1px solid var(--border)' }}>
             <div className="flex items-center gap-2">
               {health === 'online' ? (
                 <span className="relative flex h-2 w-2">
@@ -110,16 +111,11 @@ export function ProjectCard({
                   }`}
                 />
               )}
-              <span className="text-xs font-mono text-slate-300 flex-1">
+              <span className="text-xs font-mono flex-1" style={{ color: 'var(--foreground)' }}>
                 System:{' '}
                 <span
-                  className={
-                    health === 'online'
-                      ? 'text-emerald-400 font-semibold'
-                      : health === 'offline'
-                        ? 'text-red-400'
-                        : 'text-slate-400'
-                  }
+                  style={{ color: health === 'online' ? 'var(--accent)' : health === 'offline' ? '#ef4444' : 'var(--muted)' }}
+                  className={health === 'online' ? 'font-semibold' : ''}
                 >
                   {health === 'online' ? `Online - ${latency}ms latency` : 'Offline'}
                 </span>
@@ -130,8 +126,8 @@ export function ProjectCard({
 
         {/* Architecture Diagram */}
         {architecture && (
-          <div className="mb-4 p-4 bg-slate-900/50 backdrop-blur-sm rounded border border-white/5">
-            <p className="text-xs text-slate-500 mb-2 font-semibold tracking-wider uppercase">Architecture Flow</p>
+          <div className="mb-4 p-4 backdrop-blur-sm rounded" style={{ background: 'var(--badge-bg)', border: '1px solid var(--border)' }}>
+            <p className="text-xs mb-2 font-semibold tracking-wider uppercase" style={{ color: 'var(--muted)' }}>Architecture Flow</p>
             <ArchitectureDiagram flow={architecture} />
           </div>
         )}
@@ -141,7 +137,8 @@ export function ProjectCard({
           {techStack.map((tech) => (
             <span
               key={tech}
-              className="px-2 py-1 text-xs font-mono bg-slate-900/80 text-blue-300 rounded border border-white/5 group-hover:border-emerald-500/30 transition-colors"
+              className="px-2 py-1 text-xs font-mono rounded transition-colors"
+              style={{ background: 'var(--badge-bg)', border: '1px solid var(--border)', color: 'var(--primary)' }}
             >
               {tech}
             </span>

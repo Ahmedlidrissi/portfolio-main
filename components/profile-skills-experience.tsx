@@ -1,6 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import { useFirestoreSkills, useFirestoreExperience, useFirestoreBio } from '@/lib/use-firestore';
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -25,7 +26,7 @@ const itemVariants = {
   },
 };
 
-const skillCategories = [
+const staticSkillCategories = [
   {
     label: 'Backend',
     skills: ['Spring Boot', 'Laravel', 'Symfony', 'Express.js'],
@@ -44,9 +45,30 @@ const skillCategories = [
   },
 ];
 
+const staticExperience = {
+  role: 'Software Engineer',
+  company: 'Province of Settat',
+  period: '2023 – Present',
+  location: 'Remote',
+  bullets: [
+    'Architected digitized public service workflows, transitioning legacy paper systems to secure web platforms.',
+    'Engineered robust backend services (Spring Boot / Laravel) ensuring strict data integrity.',
+    'Accelerated development cycles using AI workflows, maintaining manual control over database indexing and security.',
+  ],
+};
+
+const staticBio = `Software Developer with a strong foundation in enterprise-grade backend architectures and relational data modeling. I bridge the gap between traditional enterprise reliability and modern rapid delivery by utilizing AI-assisted coding paradigms to write clean, testable, and strictly typed code.`;
+
 export function ProfileSkillsExperience() {
+  const firestoreSkills = useFirestoreSkills();
+  const firestoreExperience = useFirestoreExperience();
+  const firestoreBio = useFirestoreBio();
+
+  const skillCategories = firestoreSkills ?? staticSkillCategories;
+  const experience = firestoreExperience?.[0] ?? staticExperience;
+  const bioText = firestoreBio?.summary ?? staticBio;
   return (
-    <section className="bg-slate-950 py-20 px-4">
+    <section className="py-20 px-4" style={{ background: 'var(--background)' }}>
       <div className="max-w-6xl mx-auto">
         {/* Section Title */}
         <motion.div
@@ -56,10 +78,10 @@ export function ProfileSkillsExperience() {
           viewport={{ once: true }}
           className="mb-12"
         >
-          <h2 className="text-4xl font-bold text-slate-50 mb-2">
+          <h2 className="text-4xl font-bold mb-2" style={{ color: 'var(--heading)' }}>
             Profile, Skills & Experience
           </h2>
-          <div className="h-1 w-20 bg-blue-500 rounded"></div>
+          <div className="h-1 w-20 rounded" style={{ background: 'var(--primary)' }}></div>
         </motion.div>
 
         {/* Bento Grid */}
@@ -73,31 +95,28 @@ export function ProfileSkillsExperience() {
           {/* Card 1: Professional Summary (2 columns) */}
           <motion.div
             variants={itemVariants}
-            className="md:col-span-2 bg-gradient-to-br from-slate-950/80 to-slate-900/80 backdrop-blur-md border border-white/10 rounded-xl p-6 hover:border-emerald-500/30 transition-colors duration-300"
+            className="md:col-span-2 backdrop-blur-md rounded-xl p-6 transition-colors duration-300"
+            style={{ background: 'var(--card)', border: '1px solid var(--border)' }}
           >
             <div className="mb-4">
-              <h3 className="font-mono text-emerald-400 text-sm mb-4">
+              <h3 className="font-mono text-sm mb-4" style={{ color: 'var(--accent)' }}>
                 &gt; whoami
               </h3>
-              <div className="w-12 h-0.5 bg-emerald-500 rounded"></div>
+              <div className="w-12 h-0.5 rounded" style={{ background: 'var(--accent)' }}></div>
             </div>
 
-            <p className="text-slate-200 leading-relaxed text-base">
-              Software Developer with a strong foundation in enterprise-grade
-              backend architectures and relational data modeling. I bridge the
-              gap between traditional enterprise reliability and modern rapid
-              delivery by utilizing AI-assisted coding paradigms to write clean,
-              testable, and strictly typed code.
+            <p className="leading-relaxed text-base" style={{ color: 'var(--foreground)' }}>
+              {bioText}
             </p>
 
-            <div className="mt-6 pt-6 border-t border-white/5">
-              <p className="text-slate-400 text-sm font-mono flex items-center gap-2">
+            <div className="mt-6 pt-6" style={{ borderTop: '1px solid var(--border)' }}>
+              <p className="text-sm font-mono flex items-center gap-2" style={{ color: 'var(--muted)' }}>
                 Status: 
                 <span className="relative flex h-2 w-2">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
                 </span>
-                <span className="text-emerald-400">Online</span>
+                <span style={{ color: 'var(--accent)' }}>Online</span>
               </p>
             </div>
           </motion.div>
@@ -105,46 +124,32 @@ export function ProfileSkillsExperience() {
           {/* Card 2: Work Experience (1 column, tall) */}
           <motion.div
             variants={itemVariants}
-            className="md:row-span-2 bg-gradient-to-br from-slate-950/80 to-slate-900/80 backdrop-blur-md border border-white/10 rounded-xl p-6 hover:border-emerald-500/30 transition-colors duration-300"
+            className="md:row-span-2 backdrop-blur-md rounded-xl p-6 transition-colors duration-300"
+            style={{ background: 'var(--card)', border: '1px solid var(--border)' }}
           >
-            <h3 className="text-slate-50 font-bold text-lg mb-6">Experience</h3>
+            <h3 className="font-bold text-lg mb-6" style={{ color: 'var(--heading)' }}>Experience</h3>
 
             <div className="space-y-4">
               <div>
-                <h4 className="text-slate-200 font-semibold">
-                  Software Engineer
+                <h4 className="font-semibold" style={{ color: 'var(--foreground)' }}>
+                  {experience.role}
                 </h4>
-                <p className="text-blue-400 text-sm font-mono mt-1">
-                  Province of Settat
+                <p className="text-sm font-mono mt-1" style={{ color: 'var(--primary)' }}>
+                  {experience.company}
                 </p>
-                <p className="text-slate-500 text-xs font-mono mt-2">
-                  2023 – Present | Remote
+                <p className="text-xs font-mono mt-2" style={{ color: 'var(--muted)' }}>
+                  {experience.period} | {experience.location}
                 </p>
               </div>
 
-              <div className="pt-4 border-t border-white/5">
-                <ul className="space-y-3 text-slate-400 text-sm">
-                  <li className="flex gap-3">
-                    <span className="text-emerald-500 flex-shrink-0">→</span>
-                    <span>
-                      Architected digitized public service workflows, transitioning
-                      legacy paper systems to secure web platforms.
-                    </span>
-                  </li>
-                  <li className="flex gap-3">
-                    <span className="text-emerald-500 flex-shrink-0">→</span>
-                    <span>
-                      Engineered robust backend services (Spring Boot / Laravel)
-                      ensuring strict data integrity.
-                    </span>
-                  </li>
-                  <li className="flex gap-3">
-                    <span className="text-emerald-500 flex-shrink-0">→</span>
-                    <span>
-                      Accelerated development cycles using AI workflows, maintaining
-                      manual control over database indexing and security.
-                    </span>
-                  </li>
+              <div className="pt-4" style={{ borderTop: '1px solid var(--border)' }}>
+                <ul className="space-y-3 text-sm" style={{ color: 'var(--text-secondary)' }}>
+                  {experience.bullets.map((bullet, i) => (
+                    <li key={i} className="flex gap-3">
+                      <span className="flex-shrink-0" style={{ color: 'var(--accent)' }}>→</span>
+                      <span>{bullet}</span>
+                    </li>
+                  ))}
                 </ul>
               </div>
             </div>
@@ -153,23 +158,25 @@ export function ProfileSkillsExperience() {
           {/* Card 3: Tech Stack & Skills (Full width) */}
           <motion.div
             variants={itemVariants}
-            className="md:col-span-3 bg-gradient-to-br from-slate-950/80 to-slate-900/80 backdrop-blur-md border border-white/10 rounded-xl p-6 hover:border-emerald-500/30 transition-colors duration-300"
+            className="md:col-span-3 backdrop-blur-md rounded-xl p-6 transition-colors duration-300"
+            style={{ background: 'var(--card)', border: '1px solid var(--border)' }}
           >
-            <h3 className="text-slate-50 font-bold text-lg mb-6">
+            <h3 className="font-bold text-lg mb-6" style={{ color: 'var(--heading)' }}>
               System Architecture & Stack
             </h3>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
               {skillCategories.map((category) => (
                 <div key={category.label}>
-                  <h4 className="text-slate-200 font-semibold text-sm mb-4 font-mono text-emerald-400">
+                  <h4 className="font-semibold text-sm mb-4 font-mono" style={{ color: 'var(--accent)' }}>
                     {category.label}
                   </h4>
                   <div className="flex flex-wrap gap-2">
                     {category.skills.map((skill) => (
                       <span
                         key={skill}
-                        className="bg-slate-900/50 backdrop-blur-sm border border-white/5 text-slate-300 px-3 py-1 rounded-md font-mono text-xs hover:border-emerald-500/50 transition-colors duration-200"
+                        className="backdrop-blur-sm px-3 py-1 rounded-md font-mono text-xs transition-colors duration-200"
+                        style={{ background: 'var(--badge-bg)', border: '1px solid var(--border)', color: 'var(--foreground)' }}
                       >
                         {skill}
                       </span>
