@@ -18,6 +18,7 @@ export default function ProjectsPage() {
   const [editing, setEditing] = useState<(Project & { isNew?: boolean }) | null>(null);
   const [techInput, setTechInput] = useState('');
   const [saving, setSaving] = useState(false);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     const unsub = projectsService.subscribe(setProjects);
@@ -37,11 +38,18 @@ export default function ProjectsPage() {
   const save = async () => {
     if (!editing) return;
     setSaving(true);
-    const { isNew, id, ...data } = editing as Project & { isNew?: boolean };
-    void isNew; // used only for UI
-    await projectsService.upsert(id, { ...data, techStack: techInput.split(',').map((s) => s.trim()).filter(Boolean) });
-    setEditing(null);
-    setSaving(false);
+    setError('');
+    try {
+      const { isNew, id, ...data } = editing as Project & { isNew?: boolean };
+      void isNew; // used only for UI
+      await projectsService.upsert(id, { ...data, techStack: techInput.split(',').map((s) => s.trim()).filter(Boolean) });
+      setEditing(null);
+    } catch (err) {
+      console.error('[projects] save failed:', err);
+      setError(err instanceof Error ? err.message : 'Save failed');
+    } finally {
+      setSaving(false);
+    }
   };
 
   const remove = async (id: string) => {
@@ -88,6 +96,7 @@ export default function ProjectsPage() {
               Cancel
             </button>
           </div>
+          {error && <p className="text-sm text-red-400">{error}</p>}
         </div>
       )}
 

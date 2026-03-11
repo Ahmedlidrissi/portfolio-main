@@ -10,6 +10,7 @@ export default function ExperiencePage() {
   const [editing, setEditing] = useState<(Experience & { isNew?: boolean }) | null>(null);
   const [bulletsInput, setBulletsInput] = useState('');
   const [saving, setSaving] = useState(false);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     const unsub = experienceService.subscribe(setItems);
@@ -29,11 +30,18 @@ export default function ExperiencePage() {
   const save = async () => {
     if (!editing) return;
     setSaving(true);
-    const { isNew, id, ...data } = editing as Experience & { isNew?: boolean };
-    void isNew;
-    await experienceService.upsert(id, { ...data, bullets: bulletsInput.split('\n').map((s) => s.trim()).filter(Boolean) });
-    setEditing(null);
-    setSaving(false);
+    setError('');
+    try {
+      const { isNew, id, ...data } = editing as Experience & { isNew?: boolean };
+      void isNew;
+      await experienceService.upsert(id, { ...data, bullets: bulletsInput.split('\n').map((s) => s.trim()).filter(Boolean) });
+      setEditing(null);
+    } catch (err) {
+      console.error('[experience] save failed:', err);
+      setError(err instanceof Error ? err.message : 'Save failed');
+    } finally {
+      setSaving(false);
+    }
   };
 
   return (
@@ -68,6 +76,7 @@ export default function ExperiencePage() {
             <button onClick={save} disabled={saving} className="px-4 py-2 rounded text-sm disabled:opacity-50" style={{ background: 'var(--accent)', color: '#fff' }}>{saving ? 'Saving...' : 'Save'}</button>
             <button onClick={() => setEditing(null)} className="px-4 py-2 rounded text-sm" style={{ color: 'var(--muted)', border: '1px solid var(--border)' }}>Cancel</button>
           </div>
+          {error && <p className="text-sm text-red-400">{error}</p>}
         </div>
       )}
 

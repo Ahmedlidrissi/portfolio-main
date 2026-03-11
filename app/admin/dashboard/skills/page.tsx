@@ -10,6 +10,7 @@ export default function SkillsPage() {
   const [editing, setEditing] = useState<(Skill & { isNew?: boolean }) | null>(null);
   const [skillsInput, setSkillsInput] = useState('');
   const [saving, setSaving] = useState(false);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     const unsub = skillsService.subscribe(setGroups);
@@ -29,11 +30,18 @@ export default function SkillsPage() {
   const save = async () => {
     if (!editing) return;
     setSaving(true);
-    const { isNew, id, ...data } = editing as Skill & { isNew?: boolean };
-    void isNew;
-    await skillsService.upsert(id, { ...data, skills: skillsInput.split(',').map((s) => s.trim()).filter(Boolean) });
-    setEditing(null);
-    setSaving(false);
+    setError('');
+    try {
+      const { isNew, id, ...data } = editing as Skill & { isNew?: boolean };
+      void isNew;
+      await skillsService.upsert(id, { ...data, skills: skillsInput.split(',').map((s) => s.trim()).filter(Boolean) });
+      setEditing(null);
+    } catch (err) {
+      console.error('[skills] save failed:', err);
+      setError(err instanceof Error ? err.message : 'Save failed');
+    } finally {
+      setSaving(false);
+    }
   };
 
   return (
@@ -65,6 +73,7 @@ export default function SkillsPage() {
             <button onClick={save} disabled={saving} className="px-4 py-2 rounded text-sm disabled:opacity-50" style={{ background: 'var(--accent)', color: '#fff' }}>{saving ? 'Saving...' : 'Save'}</button>
             <button onClick={() => setEditing(null)} className="px-4 py-2 rounded text-sm" style={{ color: 'var(--muted)', border: '1px solid var(--border)' }}>Cancel</button>
           </div>
+          {error && <p className="text-sm text-red-400">{error}</p>}
         </div>
       )}
 

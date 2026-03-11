@@ -7,23 +7,33 @@ export default function BioPage() {
   const [bio, setBio] = useState<Bio | null>(null);
   const [form, setForm] = useState({ title: '', subtitle: '', summary: '' });
   const [saving, setSaving] = useState(false);
+  const [error, setError] = useState('');
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     const unsub = bioService.subscribe((item) => {
       setBio(item);
-      if (item && !loaded) {
-        setForm({ title: item.title, subtitle: item.subtitle, summary: item.summary });
-      }
+      setForm((prev) =>
+        prev.title === '' && prev.subtitle === '' && prev.summary === '' && item
+          ? { title: item.title, subtitle: item.subtitle, summary: item.summary }
+          : prev
+      );
       setLoaded(true);
     });
     return unsub;
-  }, [loaded]);
+  }, []);
 
   const save = async () => {
     setSaving(true);
-    await bioService.upsert(form);
-    setSaving(false);
+    setError('');
+    try {
+      await bioService.upsert(form);
+    } catch (err) {
+      console.error('[bio] save failed:', err);
+      setError(err instanceof Error ? err.message : 'Save failed');
+    } finally {
+      setSaving(false);
+    }
   };
 
   return (
@@ -74,6 +84,8 @@ export default function BioPage() {
           >
             {saving ? 'Saving...' : 'Save Bio'}
           </button>
+
+          {error && <p className="text-sm text-red-400 mt-2">{error}</p>}
 
           {bio && (
             <p className="text-xs mt-2" style={{ color: 'var(--muted)' }}>

@@ -4,7 +4,6 @@ import {
   getDocs,
   getDoc,
   setDoc,
-  updateDoc,
   deleteDoc,
   onSnapshot,
   type DocumentData,
@@ -55,31 +54,34 @@ export interface Bio {
 
 const db = () => getAppFirestore();
 
+function withTimeout<T>(promise: Promise<T>, ms = 10000): Promise<T> {
+  return Promise.race([
+    promise,
+    new Promise<never>((_, reject) =>
+      setTimeout(() => reject(new Error('Firestore operation timed out')), ms),
+    ),
+  ]);
+}
+
 async function getAll<T extends DocumentData>(collectionName: string): Promise<T[]> {
   const q = query(collection(db(), collectionName), orderBy('order', 'asc'));
-  const snapshot = await getDocs(q);
+  const snapshot = await withTimeout(getDocs(q));
   return snapshot.docs.map((d) => ({ id: d.id, ...d.data() } as unknown as T));
 }
 
 async function getOne<T extends DocumentData>(collectionName: string, id: string): Promise<T | null> {
   const docRef = doc(db(), collectionName, id);
-  const snapshot = await getDoc(docRef);
+  const snapshot = await withTimeout(getDoc(docRef));
   if (!snapshot.exists()) return null;
   return { id: snapshot.id, ...snapshot.data() } as unknown as T;
 }
 
 async function upsert(collectionName: string, id: string, data: DocumentData): Promise<void> {
-  const docRef = doc(db(), collectionName, id);
-  const snapshot = await getDoc(docRef);
-  if (snapshot.exists()) {
-    await updateDoc(docRef, data);
-  } else {
-    await setDoc(docRef, data);
-  }
+  await withTimeout(setDoc(doc(db(), collectionName, id), data, { merge: true }));
 }
 
 async function remove(collectionName: string, id: string): Promise<void> {
-  await deleteDoc(doc(db(), collectionName, id));
+  await withTimeout(deleteDoc(doc(db(), collectionName, id)));
 }
 
 function subscribe<T extends DocumentData>(
@@ -90,6 +92,8 @@ function subscribe<T extends DocumentData>(
   return onSnapshot(q, (snapshot) => {
     const items = snapshot.docs.map((d) => ({ id: d.id, ...d.data() } as unknown as T));
     callback(items);
+  }, (err) => {
+    console.error(`[firestore] subscribe(${collectionName}) error:`, err);
   });
 }
 
@@ -107,6 +111,8 @@ function subscribeSingle<T extends DocumentData>(
     } else {
       callback(null);
     }
+  }, (err) => {
+    console.error(`[firestore] subscribeSingle(${collectionName}/${docId}) error:`, err);
   });
 }
 

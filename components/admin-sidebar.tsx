@@ -54,7 +54,7 @@ export function AdminSidebar() {
       {/* Sign out */}
       <button
         onClick={() => signOut()}
-        className="mt-auto px-3 py-2 rounded text-sm text-left transition-colors"
+        className="mt-auto px-3 py-2 rounded text-sm text-left transition-colors cursor-pointer hover:'var(--accent)'"
         style={{ color: 'var(--muted)' }}
       >
         &gt; sign out
