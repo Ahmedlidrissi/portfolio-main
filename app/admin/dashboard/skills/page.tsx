@@ -18,7 +18,7 @@ export default function SkillsPage() {
   }, []);
 
   const startNew = () => {
-    setEditing({ ...emptySkill, id: crypto.randomUUID(), order: groups.length, isNew: true });
+    setEditing({ ...emptySkill, id: Date.now().toString(), order: groups.length, isNew: true });
     setSkillsInput('');
   };
 

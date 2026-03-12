@@ -26,7 +26,7 @@ export default function ProjectsPage() {
   }, []);
 
   const startNew = () => {
-    setEditing({ ...emptyProject, id: crypto.randomUUID(), order: projects.length, isNew: true });
+    setEditing({ ...emptyProject, id: Date.now().toString(), order: projects.length, isNew: true });
     setTechInput('');
   };
 
@@ -72,7 +72,7 @@ export default function ProjectsPage() {
             <Field label="Title" value={editing.title} onChange={(v) => setEditing({ ...editing, title: v })} />
             <Field label="Description" value={editing.description} onChange={(v) => setEditing({ ...editing, description: v })} />
             <Field label="Tech Stack (comma-separated)" value={techInput} onChange={setTechInput} />
-            <Field label="Architecture Flow (e.g. A → B → C)" value={editing.architecture ?? ''} onChange={(v) => setEditing({ ...editing, architecture: v })} />
+              <Field label="Architecture Flow (e.g. A -> B -> C)" value={editing.architecture ?? ''} onChange={(v) => setEditing({ ...editing, architecture: v })} />
             <Field label="Health Endpoint" value={editing.healthEndpoint ?? ''} onChange={(v) => setEditing({ ...editing, healthEndpoint: v })} />
             <div>
               <label className="block text-xs mb-1 uppercase tracking-wider" style={{ color: 'var(--muted)' }}>Span</label>

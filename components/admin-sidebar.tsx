@@ -6,10 +6,11 @@ import { useAuth } from '@/lib/auth-context';
 
 const navItems = [
   { href: '/admin/dashboard', label: 'Dashboard', icon: '~' },
-  { href: '/admin/dashboard/projects', label: 'Projects', icon: '>' },
-  { href: '/admin/dashboard/skills', label: 'Skills', icon: '#' },
-  { href: '/admin/dashboard/experience', label: 'Experience', icon: '@' },
+  { href: '/admin/dashboard/profile', label: 'Profile', icon: '*' },
   { href: '/admin/dashboard/bio', label: 'Bio', icon: '$' },
+  { href: '/admin/dashboard/experience', label: 'Experience', icon: '@' },
+  { href: '/admin/dashboard/skills', label: 'Skills', icon: '#' },
+  { href: '/admin/dashboard/projects', label: 'Projects', icon: '>' },
 ];
 
 export function AdminSidebar() {

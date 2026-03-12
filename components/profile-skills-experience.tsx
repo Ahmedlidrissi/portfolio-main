@@ -1,6 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import Link from 'next/link';
 import { useFirestoreSkills, useFirestoreExperience, useFirestoreBio } from '@/lib/use-firestore';
 
 const containerVariants = {
@@ -59,6 +60,8 @@ const staticExperience = {
 
 const staticBio = `Software Developer with a strong foundation in enterprise-grade backend architectures and relational data modeling. I bridge the gap between traditional enterprise reliability and modern rapid delivery by utilizing AI-assisted coding paradigms to write clean, testable, and strictly typed code.`;
 
+const TRUNCATED_BULLETS_COUNT = 4;
+
 export function ProfileSkillsExperience() {
   const firestoreSkills = useFirestoreSkills();
   const firestoreExperience = useFirestoreExperience();
@@ -67,6 +70,11 @@ export function ProfileSkillsExperience() {
   const skillCategories = firestoreSkills ?? staticSkillCategories;
   const experience = firestoreExperience?.[0] ?? staticExperience;
   const bioText = firestoreBio?.summary ?? staticBio;
+  
+  // Truncate bullets for the summary view
+  const truncatedBullets = experience.bullets.slice(0, TRUNCATED_BULLETS_COUNT);
+  const hasMoreBullets = experience.bullets.length > TRUNCATED_BULLETS_COUNT;
+
   return (
     <section className="py-20 px-4" style={{ background: 'var(--background)' }}>
       <div className="max-w-6xl mx-auto">
@@ -84,19 +92,23 @@ export function ProfileSkillsExperience() {
           <div className="h-1 w-20 rounded" style={{ background: 'var(--primary)' }}></div>
         </motion.div>
 
-        {/* Bento Grid */}
+        {/* Bento Grid - Using grid-rows-auto for dynamic height */}
         <motion.div
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
-          className="grid grid-cols-1 md:grid-cols-3 gap-6 md:grid-rows-2"
+          className="grid grid-cols-1 md:grid-cols-3 gap-6 grid-rows-auto"
         >
-          {/* Card 1: Professional Summary (2 columns) */}
+          {/* Card 1: Professional Summary (2 columns) - items-stretch */}
           <motion.div
             variants={itemVariants}
-            className="md:col-span-2 backdrop-blur-md rounded-xl p-6 transition-colors duration-300"
-            style={{ background: 'var(--card)', border: '1px solid var(--border)' }}
+            className="md:col-span-2 backdrop-blur-md rounded-xl p-6 transition-colors duration-300 flex flex-col"
+            style={{ 
+              background: 'var(--card)', 
+              border: '1px solid var(--border)',
+              boxShadow: 'var(--shadow-color)'
+            }}
           >
             <div className="mb-4">
               <h3 className="font-mono text-sm mb-4" style={{ color: 'var(--accent)' }}>
@@ -105,7 +117,7 @@ export function ProfileSkillsExperience() {
               <div className="w-12 h-0.5 rounded" style={{ background: 'var(--accent)' }}></div>
             </div>
 
-            <p className="leading-relaxed text-base" style={{ color: 'var(--foreground)' }}>
+            <p className="leading-relaxed text-base flex-grow" style={{ color: 'var(--foreground)' }}>
               {bioText}
             </p>
 
@@ -121,15 +133,19 @@ export function ProfileSkillsExperience() {
             </div>
           </motion.div>
 
-          {/* Card 2: Work Experience (1 column, tall) */}
+          {/* Card 2: Work Experience (1 column, tall) - items-stretch */}
           <motion.div
             variants={itemVariants}
-            className="md:row-span-2 backdrop-blur-md rounded-xl p-6 transition-colors duration-300"
-            style={{ background: 'var(--card)', border: '1px solid var(--border)' }}
+            className="md:row-span-2 backdrop-blur-md rounded-xl p-6 transition-colors duration-300 flex flex-col"
+            style={{ 
+              background: 'var(--card)', 
+              border: '1px solid var(--border)',
+              boxShadow: 'var(--shadow-color)'
+            }}
           >
             <h3 className="font-bold text-lg mb-6" style={{ color: 'var(--heading)' }}>Experience</h3>
 
-            <div className="space-y-4">
+            <div className="space-y-4 flex-grow">
               <div>
                 <h4 className="font-semibold" style={{ color: 'var(--foreground)' }}>
                   {experience.role}
@@ -144,14 +160,37 @@ export function ProfileSkillsExperience() {
 
               <div className="pt-4" style={{ borderTop: '1px solid var(--border)' }}>
                 <ul className="space-y-3 text-sm" style={{ color: 'var(--text-secondary)' }}>
-                  {experience.bullets.map((bullet, i) => (
+                  {truncatedBullets.map((bullet, i) => (
                     <li key={i} className="flex gap-3">
                       <span className="flex-shrink-0" style={{ color: 'var(--accent)' }}>→</span>
                       <span>{bullet}</span>
                     </li>
                   ))}
+                  {hasMoreBullets && (
+                    <li className="text-xs" style={{ color: 'var(--muted)' }}>
+                      +{experience.bullets.length - TRUNCATED_BULLETS_COUNT} more achievements...
+                    </li>
+                  )}
                 </ul>
               </div>
+            </div>
+
+            {/* Terminal Link */}
+            <div className="mt-6 pt-4" style={{ borderTop: '1px solid var(--border)' }}>
+              <Link 
+                href="/profile"
+                className="group inline-flex items-center gap-2 text-sm font-mono px-3 py-2 rounded-lg transition-all duration-300 hover:scale-105"
+                style={{ 
+                  background: 'var(--surface)', 
+                  border: '1px solid var(--border)',
+                  color: 'var(--foreground)'
+                }}
+              >
+                <span style={{ color: 'var(--accent)' }}>./</span>profile
+                <span className="opacity-0 group-hover:opacity-100 transition-opacity" style={{ color: 'var(--primary-light)' }}>
+                  →
+                </span>
+              </Link>
             </div>
           </motion.div>
 
@@ -159,7 +198,11 @@ export function ProfileSkillsExperience() {
           <motion.div
             variants={itemVariants}
             className="md:col-span-3 backdrop-blur-md rounded-xl p-6 transition-colors duration-300"
-            style={{ background: 'var(--card)', border: '1px solid var(--border)' }}
+            style={{ 
+              background: 'var(--card)', 
+              border: '1px solid var(--border)',
+              boxShadow: 'var(--shadow-color)'
+            }}
           >
             <h3 className="font-bold text-lg mb-6" style={{ color: 'var(--heading)' }}>
               System Architecture & Stack
@@ -175,8 +218,8 @@ export function ProfileSkillsExperience() {
                     {category.skills.map((skill) => (
                       <span
                         key={skill}
-                        className="backdrop-blur-sm px-3 py-1 rounded-md font-mono text-xs transition-colors duration-200"
-                        style={{ background: 'var(--badge-bg)', border: '1px solid var(--border)', color: 'var(--foreground)' }}
+                        className="backdrop-blur-sm px-3 py-1 rounded-md font-mono text-xs transition-colors duration-200 border border-white/10"
+                        style={{ background: 'var(--badge-bg)', color: 'var(--foreground)' }}
                       >
                         {skill}
                       </span>

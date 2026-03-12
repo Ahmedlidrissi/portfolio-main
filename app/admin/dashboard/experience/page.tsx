@@ -18,7 +18,7 @@ export default function ExperiencePage() {
   }, []);
 
   const startNew = () => {
-    setEditing({ ...emptyExp, id: crypto.randomUUID(), order: items.length, isNew: true });
+    setEditing({ ...emptyExp, id: Date.now().toString(), order: items.length, isNew: true });
     setBulletsInput('');
   };
 

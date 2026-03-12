@@ -14,7 +14,8 @@ interface ProjectCardProps {
 
 // Simple Architecture diagram using SVG
 function ArchitectureDiagram({ flow }: { flow: string }) {
-  const parts = flow.split('→').map(s => s.trim());
+  // Support both the unicode arrow and standard hyphen-greater-than syntax
+  const parts = flow.split(/→|->/).map(s => s.trim());
   
   return (
     <div className="mt-2 py-4 flex items-center justify-center space-x-2 text-xs font-mono relative overflow-hidden" style={{ color: 'var(--primary)' }}>

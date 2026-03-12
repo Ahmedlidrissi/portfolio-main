@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import type { Project, Skill, Experience, Bio } from '@/lib/firestore';
+import type { Project, Skill, Experience, Bio, Profile } from '@/lib/firestore';
 
 /**
  * Hooks that subscribe to Firestore real-time data when Firebase is configured,
@@ -69,6 +69,21 @@ export function useFirestoreBio(): Bio | null {
     let unsub: (() => void) | undefined;
     import('@/lib/firestore').then(({ bioService }) => {
       unsub = bioService.subscribe(setData);
+    });
+    return () => unsub?.();
+  }, []);
+
+  return data;
+}
+
+export function useFirestoreProfile(): Profile | null {
+  const [data, setData] = useState<Profile | null>(null);
+
+  useEffect(() => {
+    if (!isFirebaseConfigured()) return;
+    let unsub: (() => void) | undefined;
+    import('@/lib/firestore').then(({ profileService }) => {
+      unsub = profileService.subscribe(setData);
     });
     return () => unsub?.();
   }, []);

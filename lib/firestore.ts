@@ -40,6 +40,7 @@ export interface Experience {
   period: string;
   location: string;
   bullets: string[];
+  featuredBullets?: string[]; // Subset of bullets shown on home page
   order: number;
 }
 
@@ -48,6 +49,30 @@ export interface Bio {
   summary: string;
   title: string;
   subtitle: string;
+}
+
+export interface Certification {
+  id: string;
+  name: string;
+  issuer: string;
+  year: string;
+}
+
+export interface Profile {
+  id: string;
+  firstName: string;
+  lastName: string;
+  phone: string;
+  location: string;
+  email: string;
+  github: string;
+  linkedin: string;
+  instagram?: string;
+  facebook?: string;
+  twitter?: string;
+  headshot?: string;
+  hobbies: string[];
+  certifications?: Certification[];
 }
 
 // ─── Generic CRUD ───
@@ -146,4 +171,10 @@ export const bioService = {
   get: () => getOne<Bio>('bio', 'main'),
   upsert: (data: DocumentData) => upsert('bio', 'main', data),
   subscribe: (cb: (item: Bio | null) => void) => subscribeSingle<Bio>('bio', 'main', cb),
+};
+
+export const profileService = {
+  get: () => getOne<Profile>('profile', 'main'),
+  upsert: (data: DocumentData) => upsert('profile', 'main', data),
+  subscribe: (cb: (item: Profile | null) => void) => subscribeSingle<Profile>('profile', 'main', cb),
 };
