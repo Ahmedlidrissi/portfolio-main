@@ -318,8 +318,8 @@ export default function ProfilePage() {
                       className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-mono transition-all duration-200 hover:scale-105"
                       style={{ background: 'var(--surface)', border: '1px solid var(--border)', color: 'var(--foreground)' }}
                     >
-                      <span>🐦</span>
-                      <span style={{ color: 'var(--foreground)' }}>X</span>
+                      <span>𝕏</span>
+                      <span style={{ color: 'var(--foreground)' }}>Twitter</span>
                     </a>
                   </div>
                 </div>
