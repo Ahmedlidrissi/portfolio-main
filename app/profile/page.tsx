@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useFirestoreSkills, useFirestoreExperience, useFirestoreBio, useFirestoreProfile } from '@/lib/use-firestore';
 import type { Certification, Profile } from '@/lib/firestore';
+import { OWNER } from '@/lib/owner';
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -92,8 +93,8 @@ const staticExperiences = [
 ];
 
 const staticBio = {
-  title: 'Youssef El Amri',
-  subtitle: 'Senior Full-Stack Engineer & Creative Developer',
+  title: OWNER.name,
+  subtitle: OWNER.title,
   summary: `My journey into software engineering began with a fascination for how systems work under the hood. What started as curiosity about code evolved into a deep passion for building robust, scalable architectures that solve real-world problems.
 
 Over the years, I've developed a unique approach to engineering: combining the reliability of enterprise-grade patterns with the agility of modern development practices. I believe in using AI as a powerful assistant—not a replacement—maintaining human oversight over critical decisions like database design, security, and system architecture.
@@ -104,10 +105,10 @@ When I'm not coding, you'll find me exploring new technologies, contributing to 
 };
 
 const staticProfile: Partial<Profile> = {
-  location: 'Casablanca, Morocco',
-  email: 'hello@elamri.dev',
-  github: 'https://github.com/youssefelamri',
-  linkedin: 'https://linkedin.com/in/youssefelamri',
+  location: OWNER.location,
+  email: OWNER.email,
+  github: OWNER.github,
+  linkedin: OWNER.linkedin,
   headshot: '/headshot.jpg',
   hobbies: ['Gaming', 'Open Source Hardware', 'Hiking', 'Reading Tech Blogs', 'Building Custom Keyboards'],
 };

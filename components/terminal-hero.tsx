@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useRef } from 'react';
 import { motion } from 'framer-motion';
+import { OWNER } from '@/lib/owner';
 
 function ScanlineOverlay() {
   return (
@@ -89,12 +90,24 @@ Ready to collaborate on next-generation solutions.`;
       
       switch (cmd) {
         case 'help':
-          newHistory.push('Available commands:', '  help     - Show this message', '  clear    - Clear terminal output', '  projects - Scroll to projects section', '  exit     - Close terminal');
+          newHistory.push('Available commands:', '  help       - Show this message', '  clear      - Clear terminal output', '  about      - Display developer overview', '  skills     - List tech stack', '  experience - Show work history', '  contact    - Display contact information', '  projects   - Scroll to projects section', '  exit       - Close terminal');
           break;
         case 'clear':
           setHistory([]);
           setInput('');
           return;
+        case 'about':
+          newHistory.push(`${OWNER.name} — ${OWNER.title}`, `Location: ${OWNER.location}`, 'Focus: Cloud-native architectures, microservices, modern web', 'Available for: Freelance, full-time, and collaborations');
+          break;
+        case 'skills':
+          newHistory.push('Tech Stack:', '  Backend    → Spring Boot, Laravel, Symfony, Express.js', '  Frontend   → Next.js 15, React, Tailwind CSS, Inertia.js', '  DB & Infra → MySQL, MongoDB, Docker, Hetzner VPS', '  Concepts   → RESTful APIs, System Design, AI Orchestration');
+          break;
+        case 'experience':
+          newHistory.push('Work History:', '  2023–Present  Senior Full-Stack Engineer @ Province of Settat', '  2021–2023    Full-Stack Developer @ Tech Solutions Agency', '  2019–2021    Junior Developer @ Startup Incubator', 'Type "projects" or scroll down to see portfolio work.');
+          break;
+        case 'contact':
+          newHistory.push('Contact:', `  Email    → ${OWNER.email}`, `  GitHub   → ${OWNER.github}`, `  LinkedIn → ${OWNER.linkedin}`);
+          break;
         case 'projects':
           newHistory.push('Scrolling to projects...');
           document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' });

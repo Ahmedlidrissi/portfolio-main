@@ -15,8 +15,21 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Developer Portfolio",
-  description: "A modern, minimalist portfolio showcasing engineering excellence and innovative projects",
+  title: "Ahmed Lidrissi — Full Stack Developer",
+  description: "Senior Full-Stack Engineer specialising in cloud-native architectures, microservices, and modern web technologies. Based in Casablanca, Morocco.",
+  openGraph: {
+    title: "Ahmed Lidrissi — Full Stack Developer",
+    description: "Senior Full-Stack Engineer specialising in cloud-native architectures, microservices, and modern web technologies.",
+    url: "https://ahmedlidrissi.com",
+    siteName: "Ahmed Lidrissi Portfolio",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Ahmed Lidrissi — Full Stack Developer",
+    description: "Senior Full-Stack Engineer specialising in cloud-native architectures, microservices, and modern web technologies.",
+    creator: "@ahmedlidrissi",
+  },
 };
 
 export default function RootLayout({
