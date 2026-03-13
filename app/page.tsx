@@ -1,6 +1,7 @@
 import { TerminalHero } from '@/components/terminal-hero';
 import { BentoGrid } from '@/components/bento-grid';
 import { ProfileSkillsExperience } from '@/components/profile-skills-experience';
+import { OWNER } from '@/lib/owner';
 
 export default function Home() {
   return (
@@ -31,17 +32,17 @@ export default function Home() {
               <h3 className="font-semibold mb-3" style={{ color: 'var(--heading)' }}>Links</h3>
               <ul className="space-y-2 text-sm">
                 <li>
-                  <a href="#" className="hover:text-[var(--primary)] transition-colors" style={{ color: 'var(--text-secondary)' }}>
+                  <a href={OWNER.github} target="_blank" rel="noopener noreferrer" className="hover:text-[var(--primary)] transition-colors" style={{ color: 'var(--text-secondary)' }}>
                     GitHub
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="hover:text-[var(--primary)] transition-colors" style={{ color: 'var(--text-secondary)' }}>
+                  <a href={OWNER.linkedin} target="_blank" rel="noopener noreferrer" className="hover:text-[var(--primary)] transition-colors" style={{ color: 'var(--text-secondary)' }}>
                     LinkedIn
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="hover:text-[var(--primary)] transition-colors" style={{ color: 'var(--text-secondary)' }}>
+                  <a href={OWNER.twitter} target="_blank" rel="noopener noreferrer" className="hover:text-[var(--primary)] transition-colors" style={{ color: 'var(--text-secondary)' }}>
                     Twitter
                   </a>
                 </li>
@@ -55,7 +56,7 @@ export default function Home() {
                 Open to interesting projects and collaborations.
               </p>
               <a
-                href="mailto:hello@example.com"
+                href={`mailto:${OWNER.email}`}
                 className="inline-block px-4 py-2 text-white text-sm rounded transition-colors"
                 style={{ background: 'var(--primary)' }}
               >
